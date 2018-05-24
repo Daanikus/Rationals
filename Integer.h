@@ -6,16 +6,18 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 namespace cosc326 {
 
 	class Integer {
 
 	public:
-
+                std::vector<char> mNum;
 		Integer();                             // Integer i;
 		Integer(const Integer& i);             // Integer j(i);
 		Integer(const std::string& s);         // Integer k("123");
+                
 
 		~Integer();
 
@@ -38,6 +40,7 @@ namespace cosc326 {
 
 	private:
 		// Can add internal storage or methods here
+                
 	};
 
 	// Binary operators
