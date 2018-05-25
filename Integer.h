@@ -13,7 +13,7 @@ namespace cosc326 {
 	class Integer {
 
 	public:
-                std::vector<char> mNum;
+                std::vector<int> mNum;
 		Integer();                             // Integer i;
 		Integer(const Integer& i);             // Integer j(i);
 		Integer(const std::string& s);         // Integer k("123");
