@@ -9,7 +9,7 @@ namespace cosc326 {
     std::vector<int> mNum;
 
     Integer::Integer() {
-        mNum.push_back('0');
+        mNum.push_back(0);
     }      
 
     Integer::Integer(const Integer& i) {
@@ -84,19 +84,20 @@ namespace cosc326 {
         for (int i = 0; i < l.size(); i++) {
             int x = l.at(i);
             int y = r.at(i);
-            printf("x is %d y is %d", x, y);
+            //printf("x is %d y is %d", x, y);
             int a = x + y + carry;
-            printf("A is %d", a);
+           // printf("A is %d", a);
             carry = a / 10;
             a = a % 10;
             output.insert(output.begin(), a);
         }
-        printf("\n");
-        for (int i = 0; i < output.size(); i++) {
+        //printf("\n");
+        /*for (int i = 0; i < output.size(); i++) {
             printf("%d", output.at(i));
-        }
-        Integer thing;
-        return thing;
+        }*/
+        std::string result(output.begin(), output.end());
+        Integer resultInt = Integer(result);
+        return result;
     }
 
     Integer operator-(const Integer& lhs, const Integer& rhs) {
@@ -110,7 +111,7 @@ namespace cosc326 {
         int a = '5';
         int b = '2';
         std::string result(output.begin(), output.end());
-        std::cout << result + "\n";
+      //  std::cout << result + "\n";
         Integer ans = Integer(result);
         return ans;
     }
@@ -153,7 +154,7 @@ namespace cosc326 {
     }
 
     bool operator!=(const Integer& lhs, const Integer& rhs) {
-        return true;
+        return lhs == rhs;
     }
 
 
