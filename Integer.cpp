@@ -166,11 +166,13 @@ namespace cosc326 {
     }
 
     bool operator<=(const Integer& lhs, const Integer& rhs) {
-        return true;
+        if (lhs == rhs) return true;
+        return lhs < rhs;
     }
 
     bool operator>=(const Integer& lhs, const Integer& rhs) {
-        return true;
+        if (lhs == rhs) return true;
+        return lhs > rhs;
     }
 
     bool operator==(const Integer& lhs, const Integer& rhs) {
