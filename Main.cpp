@@ -3,7 +3,7 @@
 using namespace cosc326;
 
 int main() {
-    Integer i("-123456");
+    Integer i("123456");
     Integer j("-987654321");
     Integer r = i + j;
     std::cout << r.getValue() << '\n';
@@ -11,7 +11,12 @@ int main() {
     std::cout << r.getValue() << '\n';
     r = j;
     i = j;
-    std::cout << (r == i);
+    std::cout << (r == i) << '\n';
+    Integer x("523");
+    Integer y("102524524");
+    Integer z;
+    z = x * y;
+    std::cout << z;
     return 0;
 }
 

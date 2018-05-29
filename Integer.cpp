@@ -4,10 +4,12 @@
 #include <cstring>
 #include <vector>
 #include <algorithm>
+#include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
 
 namespace cosc326 {
 
-    
 
     Integer::Integer() {
         value_ = "0";
@@ -70,7 +72,7 @@ namespace cosc326 {
         std::string output;
         int carry = 0;
         bool rislonger = r.length() > l.length();
-        if (!lhs.sign == rhs.sign) {
+        if (lhs.sign != rhs.sign) {
             return lhs - rhs;
         }
         if (rislonger) {
@@ -118,15 +120,62 @@ namespace cosc326 {
     }
 
     Integer operator*(const Integer& lhs, const Integer& rhs) {
-        /*std::vector<int> l = lhs.mNum;
-        std::vector<int> r = rhs.mNum;
-        std::vector<int> output;
-        int a = '5';
-        int b = '2';
-        std::string result(output.begin(), output.end());
-      //  std::cout << result + "\n";
-        Integer ans = Integer(result);*/
-        return lhs;
+        std::cout << "In multi\n";
+        std::string l = lhs.value_;
+        std::string r = rhs.value_;
+        int carry = 0;
+        bool rislonger = r.length() > l.length();
+       /* if (lhs.sign != 0 && rhs.sign == 0 || lhs.sign == 0 && rhs.sign != 0) {
+            std::cout << "WRONG SIGNS! L is " << lhs.sign << " R is " << rhs.sign << '\n';
+            return lhs - rhs;
+        }*/
+        if (rislonger) {
+            int diff = r.length() - l.length();
+            int start = 0;
+            if (lhs.sign == 0) {
+                std::cout < "lhs is neg\n";
+                start += 1;        
+            }
+            for (int i = 0; i < diff; i++) {
+                l.insert(start, 1, '0');
+            }
+        } else {
+            int diff = l.length() - r.length();
+            int start = 0;
+            if (!rhs.sign) {
+                std::cout < "rhs is neg\n";
+                start += 1;        
+            }
+            for (int i = 0; i < diff; i++) {
+                r.insert(0, 1, '0');
+            }
+        }
+
+        std::cout << "Lx: " << l << "Rx: " << r << '\n';
+        std::reverse(l.begin(), l.end());
+        std::reverse(r.begin(), r.end());
+
+        int len = r.length();
+        std::cout << "LEN is " << len << '\n';
+        Integer b;
+        Integer result;
+        for (int i = 0; i < len; i++) {
+            char x = l.at(i) - 48;
+            Integer a;
+            for (int j = 0; j < len; j++) {
+                char y = (r.at(j) - 48);
+                int temp = x * (y * (j + 1));
+                char tempstr[100];
+                sprintf(tempstr, "%d", temp);
+                Integer b(tempstr);
+                a = a + b;
+            }
+            std::cout << result.value_ << '\n';
+            result = result + b;
+             
+        }
+
+        return result;
     }
 
     Integer operator/(const Integer& lhs, const Integer& rhs) {
