@@ -1,6 +1,7 @@
 #include "Integer.h"
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <algorithm>
 
@@ -30,6 +31,7 @@ namespace cosc326 {
     }
 
     Integer& Integer::operator=(const Integer& i) {
+        value_ = i.value_;
         return *this;
     }
 
@@ -137,6 +139,7 @@ namespace cosc326 {
 
 
     std::ostream& operator<<(std::ostream& os, const Integer& i) {
+        os << i.value_ << '0';
         return os;
     }
 
@@ -145,11 +148,21 @@ namespace cosc326 {
     }
 
     bool operator<(const Integer& lhs, const Integer& rhs) {
-        return true;
+        if (lhs.sign == false && rhs.sign == true) return true;
+        if (lhs.sign == true && rhs.sign == false) return false;
+        if (lhs.value_.length() > rhs.value_.length()) return false;
+        if (lhs.value_.length() < rhs.value_.length()) return true;
+        unsigned long long l, r;
+        std::string lstring = lhs.value_;
+        std::string rstring = rhs.value_;
+        l = std::atol(lstring.c_str());
+        r = std::atol(rstring.c_str());
+
+        return l < r;
     }
 
     bool operator> (const Integer& lhs, const Integer& rhs) {
-        return true;
+        return !(lhs < rhs);
     }
 
     bool operator<=(const Integer& lhs, const Integer& rhs) {
@@ -161,7 +174,8 @@ namespace cosc326 {
     }
 
     bool operator==(const Integer& lhs, const Integer& rhs) {
-        return true;
+        int res = strcmp(lhs.value_.c_str(), rhs.value_.c_str());
+        return res == 0;
     }
 
     bool operator!=(const Integer& lhs, const Integer& rhs) {
