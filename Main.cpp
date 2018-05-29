@@ -1,10 +1,12 @@
 #include "Integer.h"
 
+using namespace cosc326;
 
 int main() {
-    cosc326::Integer i("500");
-    cosc326::Integer j("60");
-    i + j;
+    Integer i("-123456");
+    Integer j("-987654321");
+    Integer r = i + j;
+    std::cout << r.getValue();
     return 0;
 }
 

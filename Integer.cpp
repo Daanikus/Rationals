@@ -6,21 +6,22 @@
 
 namespace cosc326 {
 
-    std::vector<int> mNum;
+    
 
     Integer::Integer() {
-        mNum.push_back(0);
+        value_ = "0";
+        sign = true;
     }      
 
     Integer::Integer(const Integer& i) {
-        
+        value_ = i.value_;
     }
 
     Integer::Integer(const std::string& s) {
-        for (int i = 0; i < s.length(); i++) {
-            mNum.push_back((int) s.at(i) - 48);
+        if (s[0] == '-') {
+            sign = false;
         }
-	
+        value_ = s;
     }
 
 
@@ -49,6 +50,7 @@ namespace cosc326 {
     }
 
     Integer& Integer::operator*=(const Integer& i) {
+
         return *this;
     }
 
@@ -61,42 +63,51 @@ namespace cosc326 {
     }
 
     Integer operator+(const Integer& lhs, const Integer& rhs) {
-        std::vector<int> l = lhs.mNum;
-        std::vector<int> r = rhs.mNum;
-        std::vector<int> output;
+        std::string l = lhs.value_;
+        std::string r = rhs.value_;
+        std::string output;
         int carry = 0;
-        bool rislonger = r.size() > l.size();
+        bool rislonger = r.length() > l.length();
+        if (!lhs.sign == rhs.sign) {
+            return lhs - rhs;
+        }
         if (rislonger) {
-            int diff = r.size() - l.size();
+            int diff = r.length() - l.length();
+            int start = 0;
+            if (!lhs.sign) {
+                start += 1;        
+            }
             for (int i = 0; i < diff; i++) {
-                l.insert(l.begin(), 0);
+                l.insert(start, 1, '0');
             }
         } else {
-            int diff = l.size() - r.size();
+            int diff = l.length() - r.length();
+            int start = 0;
+            if (!rhs.sign) {
+                start += 1;        
+            }
             for (int i = 0; i < diff; i++) {
-                r.insert(r.begin(), 0);
+                r.insert(0, 1, '0');
             }
         }
 
+        std::cout << "L: " << l << "R: " << r << '\n';
         std::reverse(l.begin(), l.end());
         std::reverse(r.begin(), r.end());
-
-        for (int i = 0; i < l.size(); i++) {
-            int x = l.at(i);
-            int y = r.at(i);
-            //printf("x is %d y is %d", x, y);
-            int a = x + y + carry;
-           // printf("A is %d", a);
-            carry = a / 10;
-            a = a % 10;
-            output.insert(output.begin(), a);
+        int len = l.length();
+        for (int i = 0; i < len; i++) {
+            char x = l.at(i) - 48;
+            char y = r.at(i) - 48;
+            if (x != '-' && y != '-') {
+                char a = x + y + carry;
+                carry = a / 10;
+                a = a % 10;
+                output.insert(output.begin(), a + 48);
+            } else {
+                output.insert(output.begin(), '-');
+            }
         }
-        //printf("\n");
-        /*for (int i = 0; i < output.size(); i++) {
-            printf("%d", output.at(i));
-        }*/
-        std::string result(output.begin(), output.end());
-        Integer resultInt = Integer(result);
+        Integer result = Integer(output);
         return result;
     }
 
@@ -105,15 +116,15 @@ namespace cosc326 {
     }
 
     Integer operator*(const Integer& lhs, const Integer& rhs) {
-        std::vector<int> l = lhs.mNum;
+        /*std::vector<int> l = lhs.mNum;
         std::vector<int> r = rhs.mNum;
         std::vector<int> output;
         int a = '5';
         int b = '2';
         std::string result(output.begin(), output.end());
       //  std::cout << result + "\n";
-        Integer ans = Integer(result);
-        return ans;
+        Integer ans = Integer(result);*/
+        return lhs;
     }
 
     Integer operator/(const Integer& lhs, const Integer& rhs) {
@@ -160,6 +171,10 @@ namespace cosc326 {
 
     Integer gcd(const Integer& a, const Integer& b) {
         return a;
+    }
+
+    const std::string Integer::getValue() {
+            return this->value_;
     }
 
 }
