@@ -16,7 +16,7 @@ namespace cosc326 {
 	public:
 
 		std::string value_;
-		bool sign;
+		int sign;
 		Integer();                             // Integer i;
 		Integer(const Integer& i);             // Integer j(i);
 		Integer(const std::string& s);         // Integer k("123");
@@ -24,6 +24,7 @@ namespace cosc326 {
 
 		~Integer();
 		const std::string getValue();
+		void setValue(std::string s);
 		Integer& operator=(const Integer& i);  // j = i;
 
 		// Unary operators

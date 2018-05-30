@@ -13,17 +13,16 @@ namespace cosc326 {
 
     Integer::Integer() {
         value_ = "0";
-        sign = true;
+        sign = 1;
     }      
 
     Integer::Integer(const Integer& i) {
         value_ = i.value_;
+        sign = i.sign;
     }
 
     Integer::Integer(const std::string& s) {
-        if (s[0] == '-') {
-            sign = false;
-        }
+        sign = (s[0] == '-') ? 0 : 1;
         value_ = s;
     }
 
@@ -46,6 +45,7 @@ namespace cosc326 {
     }
 
     Integer& Integer::operator+=(const Integer& i) {
+        *this = *this + i;
         return *this;
     }
 
@@ -73,21 +73,25 @@ namespace cosc326 {
         int carry = 0;
         bool rislonger = r.length() > l.length();
         if (lhs.sign != rhs.sign) {
+            std::cout << "In add: signs not same. lsh is " << lhs.sign << " and rhs is " << rhs.sign << '\n';
             return lhs - rhs;
         }
         if (rislonger) {
             int diff = r.length() - l.length();
             int start = 0;
-            if (!lhs.sign) {
+            if (lhs.sign == 0) {
+                std::cout << "alhs is neg\n";
                 start += 1;        
             }
             for (int i = 0; i < diff; i++) {
                 l.insert(start, 1, '0');
             }
+            std::cout << "aif Start is " << start << '\n';
         } else {
             int diff = l.length() - r.length();
             int start = 0;
-            if (!rhs.sign) {
+            if (rhs.sign == 0) {
+                std::cout << "arhs is neg\n";
                 start += 1;        
             }
             for (int i = 0; i < diff; i++) {
@@ -111,6 +115,9 @@ namespace cosc326 {
                 output.insert(output.begin(), '-');
             }
         }
+        if (carry != 0) {
+            output.insert(output.begin(), carry + 48);
+        }
         Integer result = Integer(output);
         return result;
     }
@@ -121,40 +128,43 @@ namespace cosc326 {
 
     Integer operator*(const Integer& lhs, const Integer& rhs) {
         std::cout << "In multi\n";
-        std::string l = lhs.value_;
-        std::string r = rhs.value_;
+        std::string l = (lhs.value_.length() > rhs.value_.length()) ? lhs.value_ : rhs.value_;
+        std::string r = (lhs.value_.length() <= rhs.value_.length()) ? lhs.value_ : rhs.value_;
         int carry = 0;
         bool rislonger = r.length() > l.length();
        /* if (lhs.sign != 0 && rhs.sign == 0 || lhs.sign == 0 && rhs.sign != 0) {
             std::cout << "WRONG SIGNS! L is " << lhs.sign << " R is " << rhs.sign << '\n';
             return lhs - rhs;
         }*/
+        // TODO Neg nums
         if (rislonger) {
             int diff = r.length() - l.length();
             int start = 0;
             if (lhs.sign == 0) {
-                std::cout < "lhs is neg\n";
+                std::cout << "lhs is neg\n";
                 start += 1;        
             }
             for (int i = 0; i < diff; i++) {
                 l.insert(start, 1, '0');
             }
+            std::cout << "if Start is " << start << '\n';
         } else {
             int diff = l.length() - r.length();
             int start = 0;
-            if (!rhs.sign) {
-                std::cout < "rhs is neg\n";
+            if (rhs.sign == 0) {
+                std::cout << "rhs is neg\n";
                 start += 1;        
             }
             for (int i = 0; i < diff; i++) {
                 r.insert(0, 1, '0');
             }
+            std::cout << "else Start is " << start << '\n';
         }
 
         std::cout << "Lx: " << l << "Rx: " << r << '\n';
-        std::reverse(l.begin(), l.end());
-        std::reverse(r.begin(), r.end());
-
+        //std::reverse(l.begin(), l.end());
+        //std::reverse(r.begin(), r.end());
+        std::cout << "LxRev: " << l << "RxRev: " << r << '\n';
         int len = r.length();
         std::cout << "LEN is " << len << '\n';
         Integer b;
@@ -164,17 +174,23 @@ namespace cosc326 {
             Integer a;
             for (int j = 0; j < len; j++) {
                 char y = (r.at(j) - 48);
-                int temp = x * (y * (j + 1));
-                char tempstr[100];
+                //int temp = x * (y * (j + 1));
+                int temp = (int) x * y;
+                std::cout << (int) x << " x " << (int) y << '\n';
+                char tempstr[1000];
                 sprintf(tempstr, "%d", temp);
-                Integer b(tempstr);
-                a = a + b;
+                r.insert(strlen(tempstr), j, '0');
+                b.setValue(tempstr);
+                std::cout << "B is " << b.getValue() << '\n';
+                std::cout << "A is " << a.getValue() << '\n';
+                a += b;
+                std::cout << "mA after add (A + B) is " << a.getValue() << '\n';
             }
-            std::cout << result.value_ << '\n';
-            result = result + b;
-             
+            std::cout << "multi result is before " << result.getValue() << '\n';
+            result += a;  
+            std::cout << "multi result is after result += b " << result.getValue() << '\n';
         }
-
+        
         return result;
     }
 
@@ -240,6 +256,10 @@ namespace cosc326 {
 
     const std::string Integer::getValue() {
             return this->value_;
+    }
+
+    void Integer::setValue(std::string s) {
+        this->value_ = s;
     }
 
 }
